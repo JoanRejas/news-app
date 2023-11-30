@@ -9,7 +9,7 @@ export class User {
     @Column({unique: true})
     email: string
 
-    @Column()
+    @Column({nullable: false}) //no acepte valores NULOS
     password: string
 
     @Column({type: 'datetime', default: () => 'CURRENT_TIMESTAMP'})
@@ -18,6 +18,6 @@ export class User {
     @Column({nullable: true})
     authStrategy: String
 
-    @Column({default: 'user'})
+    @Column({default: 'user'}) //pormdefecto user
     rol: string
 }

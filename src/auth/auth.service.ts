@@ -22,10 +22,10 @@ export class AuthService {
             throw new BadRequestException('User already exists');
         }
         // SINO GUARDAMOS
-        return await this.usersService.createUser({
+        return await this.usersService.create({
             email, 
-            password: await bcrypt.hash(password, 10) //ENCRIPTAMOS la contraseña
-        }); //mandamos al metod del user.service para guardar
+            password: await bcrypt.hash(password, 10) //ENCRIPTAMOS la contraseña con hash(password, saltos aleatorio al momento de encriptar)
+        }); //mandamos al metod del user.service para guardar con contraseña encriptada
     }
 
     async login({email, password}: LoginDto) {

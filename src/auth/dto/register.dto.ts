@@ -6,7 +6,7 @@ export class RegisterDto {
     @IsEmail()
     email: string
 
-    @Transform(({value}) => value.trim()) //valida que el el campo no vaya vacio
+    @Transform(({value}) => value.trim()) //limpia los espacios en blancos
     @IsString()
     @MinLength(6)
     password: string

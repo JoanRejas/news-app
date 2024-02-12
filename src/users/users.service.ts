@@ -3,18 +3,46 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import {CreateUserDto} from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
 
-    constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
+    constructor(
+        @InjectRepository(User) //inyectamos repositorio para que se comperte con el mismo
+        private readonly userRepository: Repository<User>//readonly para que solo utilicemos y no cambiar
+    ) {}
 
-    create(createUserDto: CreateUserDto) {
+    //Los unicos metos que se necesita para hacer el login y register es ek crete y findOneBy
+
+    async create(createUserDto: CreateUserDto) {
         const newUser = this.userRepository.create(createUserDto)
-        return this.userRepository.save(newUser)
+        return await this.userRepository.save(newUser)
+        // return this.userRepository.save(createUserDto);
     }
 
-    findOneByEmail(email: string) {
-        return this.userRepository.findOneBy({ email });
+    // RETORNA SI EXISTE EL USUARIO O NO EN LA DB
+    async findOneByEmail(email: string) {
+        return await this.userRepository.findOneBy({ email });
+    }
+
+                    // SOLO OCUPAMOS CREAR Y ENCONTRAR EMAIL
+    //-----------------------------------------------------------------------//
+
+    async findAll() {
+        return await this.userRepository.find();
+    }
+
+    async findOne(id: number) {
+        return await this.userRepository.findOneBy({ id });
+    }
+
+    async update(id: number, updateUserDto: UpdateUserDto) {
+        return await this.userRepository.update(id, updateUserDto);
+    }
+
+    async remove(id: number) {
+        return await this.userRepository.softDelete({ id }); //Eliminacion logica
+        //return await this.userRepository.softRemove({ id }); Eliminacion real
     }
 }

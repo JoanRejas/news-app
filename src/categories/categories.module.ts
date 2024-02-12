@@ -8,6 +8,6 @@ import { Category } from './entities/category.entity';
   imports: [TypeOrmModule.forFeature([Category])], //importamos para cree la tabla 
   controllers: [CategoriesController],
   providers: [CategoriesService],
-  exports: [TypeOrmModule] //exportamos porque el modulo One o News necesita acceder al REPOSITORY o metodos de consultas para interactuar (FINDONE AL CREAR UNA NEWS)
+  exports: [TypeOrmModule] //exportamos porque el el TypeOrm de News porque NEWS necesita acceder al REPOSITORY de CATEGORY (AL CREAR UNA NEWS SE NECESITA ASOCIAR AUNA CATEGOTIA)
 })
 export class CategoriesModule {}

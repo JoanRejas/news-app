@@ -10,11 +10,11 @@ import { CategoriesModule } from './categories/categories.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
+      port: 5432,
+      username: 'postgres',
+      password: 'pq01PQ',
       database: 'newsapp',
       // entities: [__dirname + '/**/*.entity{.ts,.js}'], //para que cargue cualquier archivo de ts o js que tenga .entity
       autoLoadEntities: true, //para no direccionar manualmente cada una de las entidades

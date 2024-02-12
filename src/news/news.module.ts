@@ -7,7 +7,8 @@ import { CategoriesModule } from 'src/categories/categories.module';
 import { CategoriesService } from 'src/categories/categories.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([News]), CategoriesModule], //importamos el TypeORM del Modulo One o Category que exportamos
+  //importamos el TypeORM del Modulo One o Category que exportamos e IMPORTAMOS el Modulo CATEGORY para la relacion
+  imports: [TypeOrmModule.forFeature([News]), CategoriesModule],
   controllers: [NewsController],
   providers: [NewsService, CategoriesService] //añadimos el CategoriesService por la RELACION
 })

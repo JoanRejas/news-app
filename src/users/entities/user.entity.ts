@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, DeleteDateColumn} from 'typeorm';
 
 @Entity({name: 'users'})
 export class User {
@@ -6,18 +6,24 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({unique: true})
+    @Column({unique: true, nullable: false})
     email: string
+
+    @Column({default: '18'})
+    age: number
 
     @Column({nullable: false}) //no acepte valores NULOS
     password: string
 
-    @Column({type: 'datetime', default: () => 'CURRENT_TIMESTAMP'})
+    @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     createdAt: Date
 
     @Column({nullable: true})
     authStrategy: String
 
-    @Column({default: 'user'}) //pormdefecto user
+    @DeleteDateColumn()
+    deleteAt: Date; //Eliminacion logica
+
+    @Column({default: 'admin'}) //por defecto user
     rol: string
 }

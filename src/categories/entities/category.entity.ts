@@ -15,5 +15,5 @@ export class Category {
         () => News, 
         (news) => news.category
     ) //(nombre de la entidad, columna ID de la entidad Many)
-    news: News[];
+    news: News[]; //referenciamos la relacion
 }

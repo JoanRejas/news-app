@@ -8,9 +8,8 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
 
-    //lamamos a los metodos del userService para register o login
     constructor(
-        private readonly usersService: UsersService,
+        private readonly usersService: UsersService, //lamamos a los metodos del userService para register y buscar un usuario
         private readonly jwtService: JwtService
     ) {}
     
@@ -21,7 +20,7 @@ export class AuthService {
         if(user) { // SI YA EXISTE EL USUARIO EN LA DB
             throw new BadRequestException('User already exists');
         }
-        // SINO GUARDAMOS
+        // SI NO GUARDAMOS
         return await this.usersService.create({
             email, 
             password: await bcrypt.hash(password, 10) //ENCRIPTAMOS la contraseña con hash(password, saltos aleatorio al momento de encriptar)
@@ -30,12 +29,12 @@ export class AuthService {
 
     async login({email, password}: LoginDto) {
 
-        const user = await this.usersService.findOneByEmail(email); //VERIFICAMOS EL EMAIL
+        const user = await this.usersService.findOneByEmail(email); //VERIFICAMOS SI EXISTE EL EMAIL
         
         if(!user) { // SI NO EXISTE EL USUARIO
-            throw new UnauthorizedException('Datos incorrectos');
+            throw new UnauthorizedException('Email no encontrado');
         }
-
+        //SI EXISTE
         //Comparamos la contraseña ingresada con la contraseña de la DB
         const isPasswordValid = await bcrypt.compare(password, user.password); //VERIFICAMOS LA CONTRASEÑA
 
@@ -43,6 +42,7 @@ export class AuthService {
             throw new UnauthorizedException('password incorrecto');
         }
 
+        //SI LA CONTRASEÑA ES CORRECTA
         //GENERCION DEL TOKEN
         const payload = { email: user.email }; //contiene la informacion del usuario que se incluira en el TOEKN
         const token = await this.jwtService.signAsync(payload); //Devuelve el PAYLOAD  en TOKEN JWT firmado

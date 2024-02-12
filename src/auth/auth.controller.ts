@@ -12,6 +12,7 @@ export class AuthController {
 
     @Post('register')
     register( @Body(new ValidationPipe()) registerDto: RegisterDto) { //recivimos los datos validados del DTO
+        console.log(registerDto);
         return this.authService.register(registerDto); //mandamos los datos validaos al servidor
     } 
 
@@ -21,8 +22,8 @@ export class AuthController {
     }
 
     @Get('profile')
-    @UseGuards(AuthGuard)//decoramos para que utilice GUARDS
+    @UseGuards(AuthGuard)//decoramos para que utilice GUARDS 
     profile( @Request() req) {
-        return req.user;
+        return req.user; //mostramos informacion del usuaario autorizado por GUARD
     }
 }

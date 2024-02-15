@@ -44,7 +44,7 @@ export class AuthService {
 
         //SI LA CONTRASEÑA ES CORRECTA
         //GENERCION DEL TOKEN
-        const payload = { email: user.email }; //contiene la informacion del usuario que se incluira en el TOEKN
+        const payload = { email: user.email, role: user.role }; //contiene la informacion del usuario que se incluira en el TOEKN
         const token = await this.jwtService.signAsync(payload); //Devuelve el PAYLOAD  en TOKEN JWT firmado
 
         return {token, email};

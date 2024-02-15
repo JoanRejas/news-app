@@ -25,5 +25,5 @@ export class User {
     deleteAt: Date; //Eliminacion logica
 
     @Column({default: 'admin'}) //por defecto user
-    rol: string
+    role: string
 }

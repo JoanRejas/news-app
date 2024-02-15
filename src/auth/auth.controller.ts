@@ -1,8 +1,16 @@
-import { Controller, Get, Post, Body, ValidationPipe, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { AuthGuard } from './guard/auth.guard';
+import { Request } from 'express';
+
+interface RequestWithUser extends Request {
+    user: {
+        email: string;
+        role: string;
+    }
+}
 
 
 @Controller('auth')
@@ -23,7 +31,7 @@ export class AuthController {
 
     @Get('profile')
     @UseGuards(AuthGuard)//decoramos para que utilice GUARDS 
-    profile( @Request() req) {
+    profile( @Req() req: RequestWithUser) {
         return req.user; //mostramos informacion del usuaario autorizado por GUARD
     }
 }

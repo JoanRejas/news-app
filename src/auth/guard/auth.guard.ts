@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { jwtConstants } from '../constants/swt.constant';
 
+//EL AutGuar: verifica si el JWT del usuario coincide cone el secreto interno antes de acceder a una ruta con canActivate
+
 @Injectable()
 export class AuthGuard implements CanActivate {
 
@@ -21,15 +23,15 @@ export class AuthGuard implements CanActivate {
     }
 
     try { //S EXISTE EL TOKEN:
-
-      const payload = await this.jwtService.verifyAsync( // verifyAsync obtiene el token del usuario y el secreto interno, metodo para verificar si el token JWT proporcionado es válido. Es una funcion asincrono que devuelve el payload del token si la verificacion es exitosa
+      //comparamos si coincide el token
+      const payload = await this.jwtService.verifyAsync( // verifyAsync obtiene el token del usuario y el secreto interno, metodo para verificar si el token JWT del usuario es válido. Es una funcion asincrono que devuelve el payload del token si la verificacion es exitosa
         token, // token del usuario logueado
         {
           secret: jwtConstants.secret // SECRETO INTERNO
         }
       );
       
-      //le agregamos una propiedad user al request = payload contiene informacion del usuario logueado
+      //adjuntamos el objeto payload al objeto de la solicitud con user | payload contiene informacion del usuario logueado
       request.user = payload;
 
     } catch { //S NO COINDICE EL TOKEN 'NO AUTORIZA'
@@ -37,7 +39,7 @@ export class AuthGuard implements CanActivate {
     }
     // console.log(request.headers.authorization); //accedemos a authorization para saber como fue la auth
 
-    return true; //SI ESTA AUTORIZADO DEVUELVE TRU Y CONTINUA CON LA DIRECCION
+    return true; //SI COINCIDEN CONTINUA CON LA DIRECCION
   }
 
   //metodo para extraer el token del HEADER. El token que se le genera al usuario cuando inicia sesión

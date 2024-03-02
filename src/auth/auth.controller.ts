@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Body, ValidationPipe, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { AuthGuard } from './guard/auth.guard';
 import { Request } from 'express';
+import { Role } from '../common/enums/rol.enum';
+import { Auth } from './decorators/auth.decorator';
+import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 
 interface RequestWithUser extends Request {
     user: {
@@ -11,7 +14,6 @@ interface RequestWithUser extends Request {
         role: string;
     }
 }
-
 
 @Controller('auth')
 export class AuthController {
@@ -29,9 +31,17 @@ export class AuthController {
         return this.authService.login(loginDto);
     }
 
+    // @Get('profile')
+    // @Roles(Role.Admin) //ponemos el rol que necesita esta ruta para mandarlo al DECORATOR
+    // @UseGuards(AuthGuard, RolesGuard)//decoramos para que utilice GUARDS 
+    // profile( @Req() req: RequestWithUser) {
+    //     return req.user; //mostramos informacion del usuaario autorizado por GUARD
+    // }
+
+    //UTILIZANDO AGRUPACION DE DECORADOR
     @Get('profile')
-    @UseGuards(AuthGuard)//decoramos para que utilice GUARDS 
-    profile( @Req() req: RequestWithUser) {
-        return req.user; //mostramos informacion del usuaario autorizado por GUARD
+    @Auth(Role.USER) // DECORADORES Auth()
+    profile(@ActiveUser() user: UserActiveInterface) {
+        return this.authService.profile(user); //mostramos informacion del usuaario autorizado por GUARD
     }
 }

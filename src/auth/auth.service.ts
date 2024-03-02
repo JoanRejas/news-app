@@ -29,7 +29,7 @@ export class AuthService {
 
     async login({email, password}: LoginDto) {
 
-        const user = await this.usersService.findOneByEmail(email); //VERIFICAMOS SI EXISTE EL EMAIL
+        const user = await this.usersService.findByEmailWithPassword(email); //VERIFICAMOS SI EXISTE EL EMAIL Y RETORNA + OTROS DATOS
         
         if(!user) { // SI NO EXISTE EL USUARIO
             throw new UnauthorizedException('Email no encontrado');
@@ -42,11 +42,15 @@ export class AuthService {
             throw new UnauthorizedException('password incorrecto');
         }
 
-        //SI LA CONTRASEÑA ES CORRECTA
-        //GENERCION DEL TOKEN
-        const payload = { email: user.email, role: user.role }; //contiene la informacion del usuario que se incluira en el TOEKN
-        const token = await this.jwtService.signAsync(payload); //Devuelve el PAYLOAD  en TOKEN JWT firmado
+        //SI LA CONTRASEÑA ES CORRECTA GENERAMOS EL TOKEN PARA EL USUARIO
+        const payload = { email: user.email, role: user.role }; //Armamos el payload con los datos que se incluira en el JWT de loguin
+        const token = await this.jwtService.signAsync(payload); //generamos el token con jwtService.signAsync(pasamos el payload)
 
         return {token, email};
+    }
+
+    //devuelve datos del usuario
+    async profile({email, role}: {email: string; role: string;}) {
+        return await this.usersService.findOneByEmail(email);
     }
 }

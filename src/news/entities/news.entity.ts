@@ -1,5 +1,6 @@
 import { Category } from "src/categories/entities/category.entity";
-import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/users/entities/user.entity";
+import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class News {
@@ -26,4 +27,14 @@ export class News {
         {eager: true} //Para que traiga todos los registros de la Entidad One, al hacer un findOne desde la entidad Many
     ) //(nombre de la entidad, columna ID de la entidad One, EXTRA) 
     category: Category; //Creamos la columna Foraea, referenciando a la Entidad Many
+
+    //Para relacionar el gato con un usuario
+    @ManyToOne(() => User) 
+    //joinColum sirve para especificar el nombre de la columna donde se almacenara la clave externa
+    @JoinColumn({name: 'userEmail', referencedColumnName: 'email',}) // con JoinColunm decimos el nombre de la culumna donde se almacenara una referencia del usuario | y cual sera la referencia, en este caso email
+    user: User; //Hacemos referencia a la entidad User
+
+    //creamos la columna donde se almacenara la refencia del usario
+    @Column()
+    userEmail: string;
 }

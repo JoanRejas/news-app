@@ -21,9 +21,17 @@ export class UsersService {
         // return this.userRepository.save(createUserDto);
     }
 
-    // RETORNA SI EXISTE EL USUARIO O NO EN LA DB
+    // RETORNA SI EXISTE EL EMAIL O NO EN LA DB
     async findOneByEmail(email: string) {
         return await this.userRepository.findOneBy({ email });
+    }
+
+    // RETORNA SI EXISTE EL EMAIL + otros datos
+    findByEmailWithPassword(email: string) { 
+        return this.userRepository.findOne({ //Busca
+            where: {email}, //cuando el email coincida
+            select: ['id', 'email', 'password', 'role'], //y traete estos campos
+        });
     }
 
                     // SOLO OCUPAMOS CREAR Y ENCONTRAR EMAIL

@@ -16,5 +16,5 @@ export class CreateNewsDto {
 
     @IsString()
     @IsOptional()
-    category?: string;
+    category: string;
 }

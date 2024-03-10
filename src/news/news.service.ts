@@ -7,13 +7,12 @@ import { UpdateNewsDto } from './dto/update-news.dto';
 import { News } from './entities/news.entity';
 import { UserActiveInterface } from '../common/interfaces/user-active.interface';
 import { Role } from '../common/enums/rol.enum';
-import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class NewsService {
 
   constructor(
-    @InjectRepository(News) //Para hacer consultas en la DB de esta Entidad
+    @InjectRepository(News) //Inyectanmos el repository para hacer consultas en la DB de esta Entidad NEWS
     private readonly newsRepository: Repository<News>,
 
     @InjectRepository(Category) //para hacer consultas en la tabla categoria al CREATE O UPDATE

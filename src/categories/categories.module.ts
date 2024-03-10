@@ -1,13 +1,14 @@
-import { Module } from '@nestjs/common';
+import { forwardRef,Module } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CategoriesController } from './categories.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './entities/category.entity';
+import { NewsModule } from 'src/news/news.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Category])], //importamos para cree la tabla 
+  imports: [TypeOrmModule.forFeature([Category]), forwardRef(() => NewsModule)], 
   controllers: [CategoriesController],
   providers: [CategoriesService],
-  exports: [TypeOrmModule] //exportamos porque el el TypeOrm de News porque NEWS necesita acceder al REPOSITORY de CATEGORY (AL CREAR UNA NEWS SE NECESITA ASOCIAR AUNA CATEGOTIA)
+  exports: [TypeOrmModule] //TypeOrmModule de CATEGORY porque NEWS necesita acceder al REPOSITORY de CATEGORY (AL CREAR UNA NEWS SE NECESITA ASOCIAR AUNA CATEGOTIA)
 })
 export class CategoriesModule {}

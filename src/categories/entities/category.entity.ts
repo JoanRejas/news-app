@@ -1,5 +1,5 @@
 import { News } from "src/news/entities/news.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Category {
@@ -9,6 +9,9 @@ export class Category {
 
     @Column()
     name: string;
+
+    @DeleteDateColumn()
+    deleteAt: Date;
 
     //RELACION DE ESTA ENTIDAD: One to Many
     @OneToMany(
